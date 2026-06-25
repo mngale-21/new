@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tofauti ya Zilizopo vs Zisizokuwepo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f4; }
+        .container { display: flex; gap: 30px; margin-bottom: 40px; }
+        .box { flex: 1; background-color: white; padding: 20px; border: 2px solid #ccc; border-radius: 8px; }
+        
+        /* Mitindo ya Maboksi ya Social Card */
+        .social-card { 
+            background-color: #fffde7; 
+            padding: 15px; 
+            border: 2px dashed #fbc02d; 
+            cursor: pointer; 
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+        .social-card:hover { background-color: #fff9c4; }
+        .like-btn { background-color: #007bff; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; margin-top: 10px; }
+        
+        /* Mitindo ya Fomu */
+        form { background-color: #e3f2fd; padding: 15px; border-radius: 6px; border: 1px solid #90caf9; margin-top: 15px; }
+        input[type="submit"] { background-color: #28a745; color: white; border: none; padding: 8px 15px; cursor: pointer; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h2>Kulinganisha Matokeo: Zilizopo vs Zisizokuwepo</h2>
+    <p>Jaribu kubonyeza vitufe vya pande zote mbili ili uone utofauti wa tabia zake.</p>
+    <hr>
+
+    <h3>SEHEMU YA 1: Tofauti ya stopPropagation()</h3>
+    <div class="container">
+        
+        <div class="box">
+            <h4 style="color: red;">BILA stopPropagation()</h4>
+            <p>Ukiandika hivi, ishara itapanda juu hadi kwenye box la nje.</p>
+            
+            <div class="social-card" id="cardMawasiliano">
+                <h5>Post ya Habari (Click me)</h5>
+                <button class="like-btn" id="btnLikeKawaida">Kitufe cha Like</button>
+            </div>
+        </div>
+
+        <div class="box">
+            <h4 style="color: green;">INAYO stopPropagation()</h4>
+            <p>Ukiandika hivi, ishara inapigwa breki isipande juu kabisa.</p>
+            
+            <div class="social-card" id="cardSalama">
+                <h5>Post ya Habari (Click me)</h5>
+                <button class="like-btn" id="btnLikeSalama">Kitufe cha Like</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <h3>SEHEMU YA 2: Tofauti ya preventDefault()</h3>
+    <div class="container">
+        
+        <div class="box">
+            <h4 style="color: red;">BILA preventDefault()</h4>
+            <p>Bonyeza Tuma bila kujaza kitu uone ukurasa unavyorefresh ghafla.</p>
+            
+            <form id="formKawaida">
+                Jina: <input type="text" id="jinaKawaida" placeholder="Weka jina..."> <br><br>
+                <input type="submit" value="Tuma Data">
+            </form>
+        </div>
+
+        <div class="box">
+            <h4 style="color: green;">INAYO preventDefault()</h4>
+            <p>Bonyeza Tuma bila kujaza kitu uone jinsi fomu inavyobaki palepale.</p>
+            
+            <form id="formSalama">
+                Jina: <input type="text" id="jinaSalama" placeholder="Weka jina..."> <br><br>
+                <input type="submit" value="Tuma Data">
+            </form>
+        </div>
+        
+    </div>
+
+    <script>
+        $(document).ready(function() {
+
+            // =========================================================
+            // UPANDE WA KUSHOTO: BILA KUTUMIA FUNCTION HIZO (Zenye Shida)
+            // =========================================================
+
+            // 1. Box la nje la kawaida
+            $('#cardMawasiliano').on('click', function() {
+                alert("BOX LA NJE: Umefungua habari yote ya hii Post!");
+            });
+
+            // 2. Kitufe kisicho na stopPropagation
+            $('#btnLikeKawaida').on('click', function(event) {
+                alert("KITUFE: Umelike post hii!");
+                // HUKU HUKUWEKA BREKI! Ishara itasafiri kwenda juu baada ya kubonyeza OK
+            });
+
+            // 3. Fomu isiyo na preventDefault
+            $('#formKawaida').on('submit', function(event) {
+                const jina = $('#jinaKawaida').val().trim();
+                if (jina === "") {
+                    alert("SHIDA: Alert inatokea lakini ukurasa unajirefresh na kufuta kila kitu!");
+                    // HUKU HUKUWEKA BREKI! Fomu itaondoka na kureload page kiotomatiki
+                }
+            });
+
+
+            // =========================================================
+            // UPANDE WA KULIA: SULUHISHO LA KUTUMIA FUNCTION HIZO (Safi)
+            // =========================================================
+
+            // 1. Box la nje salama
+            $('#cardSalama').on('click', function() {
+                alert("BOX LA NJE: Umefungua habari yote ya hii Post!");
+            });
+
+            // 2. Kitufe chenye stopPropagation
+            $('#btnLikeSalama').on('click', function(event) {
+                // BREKI YA MATUKIO YA JUU!
+                event.stopPropagation(); 
+                
+                alert("KITUFE: Umelike post hii! (Ona sasa: Box la nje halijafunguka kabisa).");
+            });
+
+            // 3. Fomu yenye preventDefault
+            $('#formSalama').on('submit', function(event) {
+                const jina = $('#jinaSalama').val().trim();
+                if (jina === "") {
+                    // BREKI YA TABIA YA ASILI YA BROWSER!
+                    event.preventDefault(); 
+                    
+                    alert("SAFI: Ukurasa umepigwa marufuku kurefresh! Unaweza kurekebisha makosa yako.");
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
