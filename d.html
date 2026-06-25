@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 1: jQuery Intro</title>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h1 id="main-heading">Original Text Before Page Loads</h1>
+
+    <script>
+        // 2. Use $(document).ready() to run code when the page loads
+        $(document).ready(function() {
+            
+            // 3. Change the text and color of an <h1> element when the page loads
+            $("#main-heading")
+                .text("Welcome to jQuery! Text changed successfully.")
+                .css("color", "blue");
+                
+        });
+    </script>
+
+</body>
+</html>
